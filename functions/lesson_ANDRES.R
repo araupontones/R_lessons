@@ -20,15 +20,16 @@ source("functions/functions_FUNCTIONS.R")
 paste(asc("ANDRES ARAU", simplify = T)[,1], collapse = '')
 
 #ANDRES ARAU in ASCII is "6578688269833265826585"
+## i WANT THIS RESULT FOR ANDRES ARAU : C(65786882,69833265,826585)
+
+ 
 
 
-names = c("MARTINA GARCIA", "ANDRES ARAU", "SILVIO RODRIGUEZ")
 
 
 
+## HOW WOULD I DO IT WITH OUT A FUNCTIONnames = c("IMGE CETIN", "ANDRES ARAU", "MURITZA NUMAMAT", "EDUARDO ACOSTAMADIEDO", "JASPER TJADEN")
 
-
-## HOW WOULD I DO IT WITH OUT A FUNCTION
 
 # I'd create a vector with the names in ascii
 Name_numeric = sapply(asc(names, simplify = T), function(x)paste(unlist(x), collapse = ''))

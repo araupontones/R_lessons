@@ -1,0 +1,108 @@
+---
+title: "Top Hits Script for Tuturial"
+author: "Imgesu Cetin"
+date: "9/15/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+# step by step how to make a function
+
+
+
+#this function allows it to be re-used whenever one needs to use the function
+#why I used this...
+
+#it's easy
+#simple
+#re-usable
+
+#turns F into C
+
+```{r}
+#write function
+F_to_C <- function(C){
+  c<-(C - 32) *5/9
+  return(c)
+}
+#don't forget when we return the function it makes it available in the global environment
+```
+
+#We define fahrenheit_to_celsius by assigning it to the output of function. The list of argument names are contained within parentheses. Next, the body of the function–the statements that are executed when it runs–is contained within curly braces ({}). The statements in the body are indented by two spaces, which makes the code easier to read but does not affect how the code operates.
+
+```{r}
+#here we are calling on the function we made
+#we are trying with 32 F to see what it is in C
+
+F_to_C(32)
+
+#as we know 32 F is 0 C so the return statement is 0
+
+# you have just made your first function!
+#Congrats!
+```
+
+#This function will allow users to define the 'keyword' and 'time' to get the top hits for a particular keyword around the world.
+
+#step one the function
+#produces data table
+```{r}
+
+#Top Hit functions
+world<-map_data("world")
+#top hits function
+#
+top.hits<- function(world,search_keyword,time,category=0){
+  #calling on the gtrends library within function
+  a<-gtrends(keyword = search_keyword,time = time,category = category)
+  #taking the information from the gtrends function to filter through
+  country.hits<-a$interest_by_country%>%
+    filter(location %in% world$region, hits>0)%>%
+    mutate(region = location, hits = as.numeric(hits))%>%
+    select(region,hits)%>%
+    ungroup()
+  #selecting location (countries) within the data set of "world" to create a datatable with hits.
+  return(country.hits)
+  #return
+}
+
+data<-top.hits(world=world,search_keyword = "Asylum",time = "now 1-d",category = 555)
+##top.hits.map(data)
+
+data
+```
+
+#takes data table and converts into heat map
+```{r}
+#This fuction takes the data frame, called "country.hits" and plots in a map.
+
+
+top.hits.map <- function(country.hits){
+  #here wer define 'country.hits' which is also our output of our first function
+  ggplot() +
+    geom_map(data = world,
+             map = world,
+             aes(x = long, y = lat, map_id = region),
+             fill="#ffffff", color="#ffffff", size=0.15) +
+    #we define it as the data in our ggplot
+    geom_map(data = country.hits,
+             map = world,
+             aes(fill = hits, map_id = region),
+             color="#ffffff", size=0.15) +
+    scale_fill_continuous(low = 'grey', high = 'red') +
+    theme(axis.ticks = element_blank(),
+          axis.text = element_blank(),
+          axis.title = element_blank())
+  
+  
+}
+```
+
+#Now we can use this a package and call on the function
+
+
+```{r}
+
+top.hits.map(country.hits = data)
+```
+

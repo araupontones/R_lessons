@@ -18,8 +18,8 @@ to_ascii = function(name, ...){
 }
 
 
-
-
+asc
+strtoi("A",16L)
 ## FUNCTION TO SPLIT NUMBERS INTO NEW COLUMS
 #name: character vector to be transformed to ascii
 #prefix: prefix of the new variable to be created
